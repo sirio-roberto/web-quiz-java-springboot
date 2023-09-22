@@ -1,5 +1,6 @@
 package engine.business.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
@@ -28,6 +29,10 @@ public class Quiz {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Integer> answer;
+
+    @JsonIgnore
+    @ManyToOne
+    private AppUser user;
 
     public Quiz() {
         answer = new HashSet<>();

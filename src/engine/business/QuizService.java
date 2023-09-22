@@ -11,26 +11,26 @@ import java.util.Set;
 
 @Service
 public class QuizService {
-    private final QuizRepository repository;
+    private final QuizRepository quizRepository;
 
-    public QuizService(QuizRepository repository) {
-        this.repository = repository;
+    public QuizService(QuizRepository quizRepository) {
+        this.quizRepository = quizRepository;
     }
 
     public Iterable<Quiz> getQuizzes() {
-        return repository.findAll();
+        return quizRepository.findAll();
     }
 
     public Quiz getQuizById(long id) {
-        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Quiz id not found"));
+        return quizRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Quiz id not found"));
     }
 
     public Quiz createQuiz(Quiz quiz) {
-        return repository.save(quiz);
+        return quizRepository.save(quiz);
     }
 
     public Iterable<Quiz> createQuizzes(List<Quiz> quizzes) {
-        return repository.saveAll(quizzes);
+        return quizRepository.saveAll(quizzes);
     }
 
     public AnswerResponse answerResponse(long id, Set<Integer> answer) {
