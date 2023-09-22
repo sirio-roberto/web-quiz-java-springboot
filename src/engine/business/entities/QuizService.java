@@ -28,7 +28,7 @@ public class QuizService {
 
     public AnswerResponse answerResponse(long id, int answer) {
         Quiz quiz = getQuizById(id);
-        if (answer == 2) {
+        if (answer == quiz.getAnswer()) {
             return new AnswerResponse(true, "Congratulations, you're right!");
         }
         return new AnswerResponse(false, "Wrong answer! Please, try again.");

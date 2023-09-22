@@ -1,6 +1,7 @@
 package engine.business.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Quiz {
     private static long nextId = 1;
@@ -9,7 +10,7 @@ public class Quiz {
     private String text;
     private String[] options;
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private int answer;
 
     public Quiz() {
