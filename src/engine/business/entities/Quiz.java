@@ -1,27 +1,40 @@
 package engine.business.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Quiz {
     private static long nextId = 1;
     private Long id;
+
+    @NotBlank
     private String title;
+
+    @NotBlank
     private String text;
+
+    @NotNull
+    @Size(min = 2)
     private String[] options;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private int answer;
+    private Set<Integer> answer;
 
     public Quiz() {
+        answer = new HashSet<>();
     }
 
-    public Quiz(Long id, String title, String text, String[] options, int answer) {
+    public Quiz(Long id, String title, String text, String[] options, Set<Integer> answer) {
         this.id = id;
         this.title = title;
         this.text = text;
         this.options = options;
-        this.answer = answer;
+        this.answer = answer == null ? new HashSet<>() : answer;
     }
 
     public Long getId() {
@@ -56,11 +69,11 @@ public class Quiz {
         this.options = options;
     }
 
-    public int getAnswer() {
+    public Set<Integer> getAnswer() {
         return answer;
     }
 
-    public void setAnswer(int answer) {
+    public void setAnswer(Set<Integer> answer) {
         this.answer = answer;
     }
 

@@ -1,9 +1,13 @@
-package engine.business.entities;
+package engine.business;
 
+import engine.business.entities.AnswerResponse;
+import engine.business.entities.Quiz;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 @Service
 public class QuizService {
@@ -26,9 +30,9 @@ public class QuizService {
         return quiz;
     }
 
-    public AnswerResponse answerResponse(long id, int answer) {
+    public AnswerResponse answerResponse(long id, Set<Integer> answer) {
         Quiz quiz = getQuizById(id);
-        if (answer == quiz.getAnswer()) {
+        if (Objects.equals(answer, quiz.getAnswer())) {
             return new AnswerResponse(true, "Congratulations, you're right!");
         }
         return new AnswerResponse(false, "Wrong answer! Please, try again.");
