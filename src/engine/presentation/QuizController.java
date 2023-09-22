@@ -1,31 +1,45 @@
 package engine.presentation;
 
-import engine.business.entities.AnswerResponse;
 import engine.business.entities.Quiz;
+import engine.business.entities.QuizService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/quiz")
+@RequestMapping("/api/quizzes")
 public class QuizController {
-    private final Quiz quiz = new Quiz(
-            "The Java Logo",
-            "What is depicted on the Java logo?",
-            List.of("Robot","Tea leaf","Cup of coffee","Bug").toArray(String[]::new)
-    );
+    private final QuizService service;
+
+    public QuizController(QuizService service) {
+        this.service = service;
+    }
 
     @GetMapping
-    public Quiz getQuiz() {
-        return quiz;
+    public ResponseEntity<Object> getQuizzes() {
+        return ResponseEntity.ok(service.getQuizzes());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getQuiz(@PathVariable long id) {
+        try {
+            return ResponseEntity.ok(service.getQuizById(id));
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping
-    public ResponseEntity<Object> postAnswer(@RequestParam int answer) {
-        if (answer == 2) {
-            return ResponseEntity.ok(new AnswerResponse(true, "Congratulations, you're right!"));
+    public ResponseEntity<Object> postQuiz(@RequestBody Quiz quiz) {
+        return ResponseEntity.ok(service.createQuiz(quiz));
+    }
+
+
+    @PostMapping("/{id}/solve")
+    public ResponseEntity<Object> postAnswer(@PathVariable long id, @RequestParam int answer) {
+        try {
+            return ResponseEntity.ok(service.answerResponse(id, answer));
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(new AnswerResponse(false, "Wrong answer! Please, try again."));
     }
 }
