@@ -2,14 +2,17 @@ package engine.business.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
+@Entity
 public class Quiz {
-    private static long nextId = 1;
+    @Id
+    @GeneratedValue
     private Long id;
 
     @NotBlank
@@ -23,6 +26,7 @@ public class Quiz {
     private String[] options;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ElementCollection(fetch = FetchType.EAGER)
     private Set<Integer> answer;
 
     public Quiz() {
@@ -75,9 +79,5 @@ public class Quiz {
 
     public void setAnswer(Set<Integer> answer) {
         this.answer = answer;
-    }
-
-    public static long getNextId() {
-        return nextId++;
     }
 }
