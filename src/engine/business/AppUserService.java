@@ -4,6 +4,9 @@ import engine.business.entities.AppUser;
 import engine.persistence.AppUserRepository;
 import org.springframework.stereotype.Service;
 
+import javax.validation.ConstraintViolationException;
+import java.util.Set;
+
 @Service
 public class AppUserService {
     private final AppUserRepository repository;
@@ -13,6 +16,9 @@ public class AppUserService {
     }
 
     public void createUser(AppUser user) {
+        if (repository.existsByEmail(user.getEmail())) {
+            throw new ConstraintViolationException(Set.of());
+        }
         repository.save(user);
     }
 
