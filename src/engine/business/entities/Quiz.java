@@ -38,12 +38,13 @@ public class Quiz {
         answer = new HashSet<>();
     }
 
-    public Quiz(Long id, String title, String text, String[] options, Set<Integer> answer) {
+    public Quiz(Long id, String title, String text, String[] options, Set<Integer> answer, AppUser user) {
         this.id = id;
         this.title = title;
         this.text = text;
         this.options = options;
         this.answer = answer == null ? new HashSet<>() : answer;
+        this.user = user;
     }
 
     public Long getId() {
@@ -84,5 +85,13 @@ public class Quiz {
 
     public void setAnswer(Set<Integer> answer) {
         this.answer = answer;
+    }
+
+    public AppUser getUser() {
+        return user;
+    }
+
+    public void setUser(AppUser user) {
+        this.user = user;
     }
 }
