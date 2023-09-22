@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -37,6 +38,10 @@ public class QuizController {
         return ResponseEntity.ok(service.createQuiz(quiz));
     }
 
+    @PostMapping("/batch")
+    public ResponseEntity<Object> postQuizzes(@RequestBody List<@Valid Quiz> quizzes) {
+        return ResponseEntity.ok(service.createQuizzes(quizzes));
+    }
 
     @PostMapping("/{id}/solve")
     public ResponseEntity<Object> postAnswer(@PathVariable long id, @RequestBody Map<String, Set<Integer>> answerMap) {

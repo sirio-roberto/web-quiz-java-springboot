@@ -5,6 +5,7 @@ import engine.business.entities.Quiz;
 import engine.persistence.QuizRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -26,6 +27,10 @@ public class QuizService {
 
     public Quiz createQuiz(Quiz quiz) {
         return repository.save(quiz);
+    }
+
+    public Iterable<Quiz> createQuizzes(List<Quiz> quizzes) {
+        return repository.saveAll(quizzes);
     }
 
     public AnswerResponse answerResponse(long id, Set<Integer> answer) {
