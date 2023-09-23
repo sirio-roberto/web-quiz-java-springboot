@@ -94,4 +94,11 @@ public class Quiz {
     public void setUser(AppUser user) {
         this.user = user;
     }
+
+    public static void copyQuizProperties(Quiz copyFrom, Quiz copyTo) {
+        copyTo.setTitle(copyFrom.getTitle());
+        copyTo.setText(copyFrom.getText());
+        copyTo.setOptions(copyFrom.getOptions());
+        copyTo.setAnswer(copyFrom.getAnswer());
+    }
 }

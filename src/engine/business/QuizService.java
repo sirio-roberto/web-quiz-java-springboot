@@ -58,4 +58,27 @@ public class QuizService {
         }
         return new AnswerResponse(false, "Wrong answer! Please, try again.");
     }
+
+    public boolean deleteQuiz(long id) {
+        Quiz quiz = getQuizById(id);
+        AppUser user = getAuthenticatedUser();
+        if (quiz.getUser().equals(user)) {
+            quizRepository.delete(quiz);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean updateQuiz(long id, Quiz quiz) {
+        Quiz dbQuiz = getQuizById(id);
+        AppUser user = getAuthenticatedUser();
+        if (dbQuiz.getUser().equals(user)) {
+            Quiz.copyQuizProperties(quiz, dbQuiz);
+            quizRepository.save(dbQuiz);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

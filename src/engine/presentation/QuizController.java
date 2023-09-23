@@ -2,6 +2,7 @@ package engine.presentation;
 
 import engine.business.QuizService;
 import engine.business.entities.Quiz;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +29,30 @@ public class QuizController {
     public ResponseEntity<Object> getQuiz(@PathVariable long id) {
         try {
             return ResponseEntity.ok(service.getQuizById(id));
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteQuiz(@PathVariable long id) {
+        try {
+            if (service.deleteQuiz(id)) {
+                return ResponseEntity.noContent().build();
+            } else
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updateQuiz(@PathVariable long id, @RequestBody Quiz quiz) {
+        try {
+            if (service.updateQuiz(id, quiz)) {
+                return ResponseEntity.noContent().build();
+            } else
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         } catch (IllegalArgumentException ex) {
             return ResponseEntity.notFound().build();
         }
