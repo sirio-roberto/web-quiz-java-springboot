@@ -42,6 +42,8 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(auth -> auth
                         .antMatchers("/api/register").permitAll()
+                        .antMatchers("/actuator/shutdown").permitAll()
+                        .antMatchers("/api/h2-console/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())

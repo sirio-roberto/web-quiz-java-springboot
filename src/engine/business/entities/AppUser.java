@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.Objects;
 
@@ -17,7 +18,7 @@ public class AppUser {
 
     @Column(unique = true)
     @NotBlank
-    @Email
+    @Pattern(regexp = "(?i)^[a-z0-9]+@[a-z0-9]+\\.[a-z0-9]+$")
     private String email;
 
     @NotBlank
