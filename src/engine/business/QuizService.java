@@ -97,8 +97,9 @@ public class QuizService {
     }
 
     public Page<QuizCompletion> getCompletedQuizzes(int page) {
-        return completionRepository.findByUser(
+        return completionRepository.findByUserAndCorrectAnswer(
                 getAuthenticatedUser(),
+                true,
                 PageRequest.of(page, 10, Sort.by("completedAt").descending()));
     }
 }

@@ -7,5 +7,5 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface QuizCompletionRepository extends PagingAndSortingRepository<QuizCompletion, Long> {
-    Page<QuizCompletion> findByUser(AppUser user, Pageable pageable);
+    Page<QuizCompletion> findByUserAndCorrectAnswer(AppUser user, boolean correctAnswer, Pageable pageable);
 }

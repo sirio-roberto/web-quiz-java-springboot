@@ -21,7 +21,7 @@ public class QuizController {
     }
 
     @GetMapping
-    public ResponseEntity<Object> getQuizzes(@RequestParam int page) {
+    public ResponseEntity<Object> getQuizzes(@RequestParam(defaultValue = "0") int page) {
         return ResponseEntity.ok(service.getQuizzes(page));
     }
 
@@ -82,7 +82,7 @@ public class QuizController {
     }
 
     @GetMapping("/completed")
-    public ResponseEntity<Object> getCompletedQuizzes(@RequestParam int page) {
+    public ResponseEntity<Object> getCompletedQuizzes(@RequestParam(defaultValue = "0") int page) {
         return ResponseEntity.ok(service.getCompletedQuizzes(page));
     }
 }
