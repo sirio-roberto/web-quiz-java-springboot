@@ -80,4 +80,9 @@ public class QuizController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/completed")
+    public ResponseEntity<Object> getCompletedQuizzes(@RequestParam int page) {
+        return ResponseEntity.ok(service.getCompletedQuizzes(page));
+    }
 }

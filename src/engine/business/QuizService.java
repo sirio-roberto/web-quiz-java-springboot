@@ -1,19 +1,18 @@
 package engine.business;
 
-import engine.business.entities.AnswerResponse;
-import engine.business.entities.AppUser;
-import engine.business.entities.AppUserAdapter;
-import engine.business.entities.Quiz;
+import engine.business.entities.*;
 import engine.persistence.AppUserRepository;
+import engine.persistence.QuizCompletionRepository;
 import engine.persistence.QuizRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -22,10 +21,12 @@ import java.util.Set;
 public class QuizService {
     private final QuizRepository quizRepository;
     private final AppUserRepository userRepository;
+    private final QuizCompletionRepository completionRepository;
 
-    public QuizService(QuizRepository quizRepository, AppUserRepository userRepository) {
+    public QuizService(QuizRepository quizRepository, AppUserRepository userRepository, QuizCompletionRepository completionRepository) {
         this.quizRepository = quizRepository;
         this.userRepository = userRepository;
+        this.completionRepository = completionRepository;
     }
 
     public Page<Quiz> getQuizzes(int page) {
@@ -56,10 +57,20 @@ public class QuizService {
 
     public AnswerResponse answerResponse(long id, Set<Integer> answer) {
         Quiz quiz = getQuizById(id);
+        AppUser user = getAuthenticatedUser();
+
+        QuizCompletion quizCompletion = new QuizCompletion(quiz.getId(), LocalDateTime.now(), user);
+        AnswerResponse answerResponse;
+
         if (Objects.equals(answer, quiz.getAnswer())) {
-            return new AnswerResponse(true, "Congratulations, you're right!");
+            answerResponse = new AnswerResponse(true, "Congratulations, you're right!");
+            quizCompletion.setCorrectAnswer(true);
+        } else {
+            answerResponse = new AnswerResponse(false, "Wrong answer! Please, try again.");
+            quizCompletion.setCorrectAnswer(false);
         }
-        return new AnswerResponse(false, "Wrong answer! Please, try again.");
+        completionRepository.save(quizCompletion);
+        return answerResponse;
     }
 
     public boolean deleteQuiz(long id) {
@@ -83,5 +94,11 @@ public class QuizService {
         } else {
             return false;
         }
+    }
+
+    public Page<QuizCompletion> getCompletedQuizzes(int page) {
+        return completionRepository.findByUser(
+                getAuthenticatedUser(),
+                PageRequest.of(page, 10, Sort.by("completedAt").descending()));
     }
 }
