@@ -6,6 +6,9 @@ import engine.business.entities.AppUserAdapter;
 import engine.business.entities.Quiz;
 import engine.persistence.AppUserRepository;
 import engine.persistence.QuizRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,8 +28,8 @@ public class QuizService {
         this.userRepository = userRepository;
     }
 
-    public Iterable<Quiz> getQuizzes() {
-        return quizRepository.findAll();
+    public Page<Quiz> getQuizzes(int page) {
+        return quizRepository.findAll(PageRequest.of(page, 10));
     }
 
     public Quiz getQuizById(long id) {

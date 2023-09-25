@@ -21,8 +21,8 @@ public class QuizController {
     }
 
     @GetMapping
-    public ResponseEntity<Object> getQuizzes() {
-        return ResponseEntity.ok(service.getQuizzes());
+    public ResponseEntity<Object> getQuizzes(@RequestParam int page) {
+        return ResponseEntity.ok(service.getQuizzes(page));
     }
 
     @GetMapping("/{id}")
